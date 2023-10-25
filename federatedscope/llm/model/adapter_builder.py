@@ -32,6 +32,8 @@ def enable_adapter(model, package, adapter, **kwargs):
             P-Tuning
             Prompt Tuning
             AdaLoRA
+            LOHA
+            IA3
         """
         from peft import get_peft_model, TaskType
         if adapter == 'lora':
@@ -53,6 +55,21 @@ def enable_adapter(model, package, adapter, **kwargs):
             peft_config = PromptEncoderConfig(task_type=TaskType.CAUSAL_LM,
                                               **kwargs)
             model = get_peft_model(model, peft_config)
+
+        #--------------- ADDING NEW CODE HERE ---------------------------------
+        elif adapter == 'loha':
+            from peft import LoHaConfig
+            peft_config = LoHaConfig(task_type=TaskType.CAUSAL_LM, target_modules=["q", "v"], **kwargs)
+            model = get_peft_model(model, peft_config)
+        elif adapter == 'ada-lora':
+            from peft import AdaLoraConfig
+            peft_config = AdaLoraConfig(task_type=TaskType.CAUSAL_LM,target_modules=["q", "v"], **kwargs)
+            model = get_peft_model(model, peft_config)
+        elif adapter == 'ia3':
+            from peft import IA3Config
+            peft_config = IA3Config(task_type=TaskType.CAUSAL_LM,target_modules=["q", "v"], **kwargs)
+            model = get_peft_model(model, peft_config)
+
         else:
             raise NotImplementedError
         model.print_trainable_parameters()
