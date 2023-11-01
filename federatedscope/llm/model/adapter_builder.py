@@ -56,18 +56,18 @@ def enable_adapter(model, package, adapter, **kwargs):
             from peft import LoHaConfig, LoHaModel
             peft_config = LoHaConfig(task_type=TaskType.CAUSAL_LM,
                                      target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
-            model = LoHaModel(model, peft_config, adapter_name='default')
+            model = get_peft_model(model, peft_config)
         elif adapter == 'ada-lora':
             from peft import AdaLoraModel, AdaLoraConfig
             peft_config = AdaLoraConfig(task_type=TaskType.CAUSAL_LM,
                                         target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
-            model = AdaLoraModel(model, peft_config, "default")
+            model = get_peft_model(model, peft_config)
             # model = get_peft_model(model, peft_config)
         elif adapter == 'ia3':
             from peft import IA3Config, IA3Model
             peft_config = IA3Config(task_type=TaskType.CAUSAL_LM,
                                     target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
-            model = IA3Model(model, peft_config, adapter_name='default')
+            model = get_peft_model(model, peft_config)
 
         else:
             raise NotImplementedError
