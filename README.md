@@ -85,6 +85,27 @@ python federatedscope/main.py \
 --cfg federatedscope/llm/baseline/testcase.yaml
 ```
 
+### Experiments
+```bash
+python3.9 federatedscope/main.py \
+--cfg federatedscope/llm/baseline/new_exp_yaml/alpaca_local_loha_1.yaml
+
+python3.9 federatedscope/main.py \
+--cfg federatedscope/llm/baseline/new_exp_yaml/alpaca_local_adalora_2.yaml
+
+python3.9 federatedscope/main.py \
+--cfg federatedscope/llm/baseline/new_exp_yaml/alpaca_local_ia3_3.yaml
+```
+
+### Upload/Download S3
+```bash
+# download
+aws s3 cp s3://federated-learning-research-v1/FederatedScope-V1.zip .
+aws s3 cp s3://federated-learning-research-v1/FederatedScope-V1.zip . --profile elbowai
+# upload
+aws s3 cp FederatedScope-V1.zip s3://federated-learning-research-v1/FederatedScope-V1.zip --profile elbowai
+```
+
 For more details about customized configurations, see **Advanced**.
 
 ## Advanced

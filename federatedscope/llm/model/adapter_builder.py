@@ -32,7 +32,7 @@ def enable_adapter(model, package, adapter, **kwargs):
             P-Tuning
             Prompt Tuning
             AdaLoRA
-            LOHA
+            LoHa
             IA3
         """
         from peft import get_peft_model, TaskType
@@ -42,31 +42,32 @@ def enable_adapter(model, package, adapter, **kwargs):
             model = get_peft_model(model, peft_config)
         elif adapter == 'prefix':
             from peft import PrefixTuningConfig
-            peft_config = PrefixTuningConfig(task_type=TaskType.CAUSAL_LM,
-                                             **kwargs)
+            peft_config = PrefixTuningConfig(task_type=TaskType.CAUSAL_LM, **kwargs)
             model = get_peft_model(model, peft_config)
         elif adapter == 'prompt':
             from peft import PromptTuningConfig
-            peft_config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,
-                                             **kwargs)
+            peft_config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM, **kwargs)
             model = get_peft_model(model, peft_config)
         elif adapter == 'p-tuning':
             from peft import PromptEncoderConfig
-            peft_config = PromptEncoderConfig(task_type=TaskType.CAUSAL_LM,
-                                              **kwargs)
+            peft_config = PromptEncoderConfig(task_type=TaskType.CAUSAL_LM, **kwargs)
             model = get_peft_model(model, peft_config)
         elif adapter == 'loha':
-            from peft import LoHaConfig
-            peft_config = LoHaConfig(task_type=TaskType.CAUSAL_LM, target_modules=["q", "v"], **kwargs)
-            model = get_peft_model(model, peft_config)
+            from peft import LoHaConfig, LoHaModel
+            peft_config = LoHaConfig(task_type=TaskType.CAUSAL_LM,
+                                     target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
+            model = LoHaModel(model, peft_config, adapter_name='default')
         elif adapter == 'ada-lora':
-            from peft import AdaLoraConfig
-            peft_config = AdaLoraConfig(task_type=TaskType.CAUSAL_LM, target_modules=["q", "v"], **kwargs)
-            model = get_peft_model(model, peft_config)
+            from peft import AdaLoraModel, AdaLoraConfig
+            peft_config = AdaLoraConfig(task_type=TaskType.CAUSAL_LM,
+                                        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
+            model = AdaLoraModel(model, peft_config, "default")
+            # model = get_peft_model(model, peft_config)
         elif adapter == 'ia3':
-            from peft import IA3Config
-            peft_config = IA3Config(task_type=TaskType.CAUSAL_LM, target_modules=["q", "v"], **kwargs)
-            model = get_peft_model(model, peft_config)
+            from peft import IA3Config, IA3Model
+            peft_config = IA3Config(task_type=TaskType.CAUSAL_LM,
+                                    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
+            model = IA3Model(model, peft_config, adapter_name='default')
 
         else:
             raise NotImplementedError
