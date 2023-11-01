@@ -59,14 +59,19 @@ def enable_adapter(model, package, adapter, **kwargs):
             model = get_peft_model(model, peft_config)
         elif adapter == 'ada-lora':
             from peft import AdaLoraModel, AdaLoraConfig
-            peft_config = AdaLoraConfig(task_type=TaskType.CAUSAL_LM,
-                                        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
+            # peft_config = AdaLoraConfig(task_type=TaskType.CAUSAL_LM, target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
+            peft_config = AdaLoraConfig(
+                peft_type="ADALORA",
+                task_type="CAUSAL_LM",
+                target_modules=["k_proj", "q_proj", "v_proj", "out_proj", "fc1", "fc2"],
+                **kwargs
+            )
             model = get_peft_model(model, peft_config)
             # model = get_peft_model(model, peft_config)
         elif adapter == 'ia3':
             from peft import IA3Config, IA3Model
             peft_config = IA3Config(task_type=TaskType.CAUSAL_LM,
-                                    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
+                                    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"], **kwargs)
             model = get_peft_model(model, peft_config)
 
         else:

@@ -32,7 +32,7 @@ def extend_model_cfg(cfg):
 
     # language model for hetero NLP tasks
     cfg.model.stage = ''  # ['assign', 'contrast']
-    cfg.model.model_type = 'google/bert_uncased_L-2_H-128_A-2'
+    cfg.model.model_type = 'linhvu/decapoda-research-llama-7b-hf' #'google/bert_uncased_L-2_H-128_A-2'
     cfg.model.pretrain_tasks = []
     cfg.model.downstream_tasks = []
     cfg.model.num_labels = 1
